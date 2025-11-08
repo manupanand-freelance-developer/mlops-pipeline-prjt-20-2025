@@ -1,4 +1,4 @@
-name: Infrastructure ec2 provisioning pipeline 
+name: Monitor provisioning pipeline 
 on: 
   workflow_dispatch:
 jobs: 

@@ -1,4 +1,4 @@
-name: Grafana destroy pipeline
+name: Destroy Monitor pipeline
 on: 
   workflow_dispatch:
 jobs:
