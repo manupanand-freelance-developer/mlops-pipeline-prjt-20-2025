@@ -38,7 +38,7 @@ module "dns" {
   depends_on            = [ module.monitor ]
   source                = "./modules/dns"
   for_each              = var.ec2_instance 
-  public_ip             = module.grafana[each.key].instance_ip
+  public_ip             = module.monitor[each.key].instance_ip
   zone_id               = var.zone_id
   dns                   = var.dns 
   
