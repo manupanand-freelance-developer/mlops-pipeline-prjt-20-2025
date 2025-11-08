@@ -1,0 +1,96 @@
+
+- name: Setting prompt name
+  ansible.builtin.lineinfile:
+     path: "/home/ec2-user/.bashrc"
+     line: 'export PS1="\[\e[1;31m\]\u\[\e[0m\]@\[\e[1;34m\]{{ role_name }}\[\e[0m\] \w \$ "'
+     create: true
+     mode: '0644'
+
+- name: Installing firewalld
+  ansible.builtin.dnf: 
+    name: firewalld 
+    state: latest
+  
+
+
+- name: Installing dnf-plugins-core
+  ansible.builtin.dnf:
+    name:  dnf-plugins-core
+    state: present
+
+
+
+
+- name: Install Nginx
+  ansible.builtin.dnf:
+    name: nginx 
+    state: latest
+- name: Copy nginx conf 
+  ansible.builtin.template: 
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: '0644'
+- name: Copy  Elastic Configuration files
+  ansible.builtin.copy:
+    src: elastic.repo 
+    dest: /etc/yum.repos.d/elastic.repo
+
+- name: Copy Nginx config files
+  ansible.builtin.copy:
+    src: "{{ item }}.conf"
+    dest: /etc/nginx/conf.d/
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - kibana
+    - grafana
+    - prometheus
+  
+
+- name: Enable  nginx
+  ansible.builtin.systemd_service: 
+   name:  nginx
+   state: restarted
+   enabled: true
+
+- name: Enabling ports with firewalld
+  ansible.builtin.shell: | 
+     firewall-cmd --zone=public --add-port=22/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=3000/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=80/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=443/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=9200/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=5601/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=9600/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=5044/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=5000/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=9300/tcp --permanent  && firewall-cmd --reload
+     firewall-cmd --zone=public --add-port=9090/tcp --permanent  && firewall-cmd --reload
+
+  args:
+    executable: /bin/bash
+
+- name: Download binary Prometheus
+  ansible.builtin.unarchive:
+    src: https://github.com/prometheus/prometheus/releases/download/v3.7.3/prometheus-3.7.3.linux-amd64.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Move binary of prometheus
+  ansible.builtin.command: mv /path/to/original_file /path/to/new_location/new_filename
+
+
+- name: Install Grafana
+- name: Install elastic
+- name: Install logstash
+- name: Install Kibana
+
+             
+- name: Enable  firewalld
+  ansible.builtin.systemd_service: 
+   name:  firewalld
+   state: restarted
+   enabled: true 

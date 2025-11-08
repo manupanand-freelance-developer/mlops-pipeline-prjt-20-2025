@@ -16,9 +16,9 @@ module "iam_role" {
 
 }
 #create ec2-instance
-module "grafana" {
+module "ec2_instance" {
   depends_on = [ module.iam_role,module.security_group ]
-  source                = "./modules/grafana"
+  source                = "./modules/ec2"
   for_each              = var.ec2_instance
   env                   = var.env
   name                  = each.key
@@ -31,14 +31,4 @@ module "grafana" {
   aws_user              = var.aws_user
   aws_password          = var.aws_password  
 
-}
-# route 53
-module "dns" {
-
-  depends_on            = [ module.grafana ]
-  source                = "./modules/dns"
-  for_each              = var.ec2_instance 
-  public_ip             = module.grafana[each.key].instance_ip
-  zone_id               = var.zone_id
-  
 }
