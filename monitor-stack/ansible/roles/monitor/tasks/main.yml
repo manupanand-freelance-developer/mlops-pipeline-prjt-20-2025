@@ -97,17 +97,17 @@
     - /etc/prometheus
     - /var/lib/prometheus
     
-- name: Copy Prometheus binaries
-  ansible.builtin.copy:
-    src: "/tmp/prometheus-3.7.3.linux-amd64/{{ item }}"
-    dest: "/usr/local/bin/{{ item }}"
-    owner: prometheus
-    group: prometheus
-    mode: '0755'
-  loop:
-    - prometheus
-    - promtool
-  remote_src: yes
+# - name: Copy Prometheus binaries
+#   ansible.builtin.copy:
+#     src: "/tmp/prometheus-3.7.3.linux-amd64/{{ item }}"
+#     dest: "/usr/local/bin/{{ item }}"
+#     owner: prometheus
+#     group: prometheus
+#     mode: '0755'
+#   loop:
+#     - prometheus
+#     - promtool
+#   remote_src: yes
     
 - name: Copy Prometheus configuration files
   ansible.builtin.copy:
