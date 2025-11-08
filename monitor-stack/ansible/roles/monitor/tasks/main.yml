@@ -72,21 +72,79 @@
 
   args:
     executable: /bin/bash
-
-- name: Download binary Prometheus
+- name: Download and extract Prometheus
   ansible.builtin.unarchive:
     src: https://github.com/prometheus/prometheus/releases/download/v3.7.3/prometheus-3.7.3.linux-amd64.tar.gz
     dest: /tmp
     remote_src: yes
+    
+    
+- name: Create Prometheus user
+  ansible.builtin.user:
+    name: prometheus
+    shell: /usr/sbin/nologin
+    create_home: no
+    system: yes
+    
+- name: Create Prometheus directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: prometheus
+    group: prometheus
+    mode: '0755'
+  loop:
+    - /etc/prometheus
+    - /var/lib/prometheus
+    
+- name: Copy Prometheus binaries
+  ansible.builtin.copy:
+    src: "/tmp/prometheus-3.7.3.linux-amd64/{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
+    owner: prometheus
+    group: prometheus
+    mode: '0755'
+  loop:
+    - prometheus
+    - promtool
+  remote_src: yes
+    
+- name: Copy Prometheus configuration files
+  ansible.builtin.copy:
+    src: "/tmp/prometheus-3.7.3.linux-amd64/{{ item }}"
+    dest: "/etc/prometheus/{{ item }}"
+    owner: prometheus
+    group: prometheus
+    mode: '0644'
+  loop:
+    - prometheus.yml
+  remote_src: yes
+    
 
-- name: Move binary of prometheus
-  ansible.builtin.command: mv /path/to/original_file /path/to/new_location/new_filename
+    
+- name: Copy Prometheus systemd service
+  ansible.builtin.copy:
+    src: prometheus.service
+    dest: /etc/systemd/system/prometheus.service
+    owner: root
+    group: root
+    mode: '0644'
+    
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Enable and start Prometheus
+  ansible.builtin.systemd:
+    name: prometheus
+    enabled: true
+    state: started
 
 
-- name: Install Grafana
-- name: Install elastic
-- name: Install logstash
-- name: Install Kibana
+# - name: Install Grafana
+# - name: Install elastic
+# - name: Install logstash
+# - name: Install Kibana
 
              
 - name: Enable  firewalld
