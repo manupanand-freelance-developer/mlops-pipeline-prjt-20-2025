@@ -50,3 +50,7 @@ ec2_instance={
     }
     
 }
+dns={
+  monitor
+  grafana
+}
