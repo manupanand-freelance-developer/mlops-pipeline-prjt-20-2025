@@ -25,3 +25,6 @@ variable "zone_id" {
 variable "dns" {
   
 }
+variable "vault_token" {
+  
+}

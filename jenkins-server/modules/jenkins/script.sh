@@ -66,7 +66,7 @@ ansible-pull -i localhost, \
   jenkins-server/ansible/playbook.yml \
   -e ansible_user="${AWS_USER}" \
   -e ansible_password="${AWS_PASSWORD}" \
-  -e role_name="${role_name}"
+  -e role_name="${role_name}" \
   -e vault_token="${vault_token}"
 
 echo "========== Script completed at $(date) =========="
