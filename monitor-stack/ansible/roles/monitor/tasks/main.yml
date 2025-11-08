@@ -161,10 +161,29 @@
      state: started
           
  # - name: Install elastic
-# - name: Install logstash
-# - name: Install Kibana   
+- name: Import Elastic search GPG key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+- name: Install Elastc search
+  ansible.builtin.dnf: 
+    name: elasticsearch
+    state: latest
+
+- name: Install Kibana
+  ansible.builtin.dnf: 
+    name: kibana
+    state: latest
+- name: Install logstash
+  ansible.builtin.dnf: 
+    name: logstash
+    state: latest
+  
+   
 - name: Enable  firewalld
   ansible.builtin.systemd_service: 
    name:  firewalld
    state: restarted
    enabled: true 
+   
+   
