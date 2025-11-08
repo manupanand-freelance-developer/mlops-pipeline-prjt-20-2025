@@ -1,5 +1,5 @@
 
-# 🌍 Monitor Stack Infrastructure Deployment
+# 🌍 Grafana Infrastructure Deployment
 
 
 This repository contains infrastructure as code (IaC) configurations using **Terraform**. The setup is environment-specific, with variables and backend configurations maintained per environment (e.g., `env-dev`).
@@ -30,7 +30,7 @@ This repository contains infrastructure as code (IaC) configurations using **Ter
 |   |    ├── main.tf 
 |   |    ├── output.tf       
 │   |    └── variables.tf
-│   └── monitor/
+│   └── grafana/
 |        ├── data.tf 
 |        ├── main.tf 
 |        ├── output.tf       
@@ -60,7 +60,7 @@ Then run the following commands:
 Initializes the working directory and configures the backend:
 
 ```bash
-cd monitor
+cd grafana
 
 terraform init -backend-config=env-dev/state.tfvars
 ```

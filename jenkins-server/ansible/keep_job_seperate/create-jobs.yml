@@ -1,0 +1,5 @@
+- name: Configuring Jobs on server
+  hosts: all
+  become: true
+  roles:
+    - "{{ role_name }}"

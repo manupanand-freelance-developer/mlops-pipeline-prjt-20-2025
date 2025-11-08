@@ -16,9 +16,9 @@ module "iam_role" {
 
 }
 #create ec2-instance
-module "jenkins" {
+module "monitor" {
   depends_on = [ module.iam_role,module.security_group ]
-  source                = "./modules/jenkins"
+  source                = "./modules/monitor"
   for_each              = var.ec2_instance
   env                   = var.env
   name                  = each.key
@@ -35,10 +35,10 @@ module "jenkins" {
 # route 53
 module "dns" {
 
-  depends_on            = [ module.jenkins ]
+  depends_on            = [ module.monitor ]
   source                = "./modules/dns"
   for_each              = var.ec2_instance 
-  public_ip             = module.jenkins[each.key].instance_ip
+  public_ip             = module.monitor[each.key].instance_ip
   zone_id               = var.zone_id
   dns                   = var.dns 
   

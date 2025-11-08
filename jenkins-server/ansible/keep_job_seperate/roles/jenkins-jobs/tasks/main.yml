@@ -1,0 +1,7 @@
+- name: create jobs
+  ansible.builtin.include_tasks: 
+     file: create-jobs.yml
+  loop: 
+    # - { jobName: 'test-1', jobDescription: 'testjob', repo_name: 'gcp-devops'}
+    # - { jobName: 'blpnewtest', jobDescription: 'blpnewtest', repo_name: 'gcp-devops'}
+    - { jobName: 'gsrtest', jobDescription: 'gsrtest', repo_name: 'gcp-devops',credentials: 'github-token-new'}    
