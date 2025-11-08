@@ -1,4 +1,4 @@
 secrets: "{{lookup('community.hashi_vault.hashi_vault','secret=tools/data/jenkins token={{vault_token}} url=https://vault.manupanand.click:8200 validate_certs=False')}}"
 # secrets: "{{ lookup('hashi_vault',
 #                     'secret=tools/data/jenkins token=' + vault_token + ' url=https://vault.manu:8200 validate_certs=False') }}"
-ansible_python_interpreter: /usr/bin/python3
+#ansible_python_interpreter: /usr/bin/python3
