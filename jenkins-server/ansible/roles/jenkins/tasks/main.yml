@@ -160,6 +160,7 @@
     - 03-plugins 
     - 04-shared-library
     - 05-setup-credentials
+    - 06-init
     
 - name: Start Jenkins 
   ansible.builtin.systemd_service: 
