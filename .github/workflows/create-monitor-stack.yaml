@@ -2,7 +2,7 @@ name: Monitor provisioning pipeline
 on: 
   workflow_dispatch:
 jobs: 
-  DEV: 
+  Infra-development: 
     runs-on: rhel_arm   
     steps:
       - name: Import secrets hashicorp 
@@ -30,27 +30,7 @@ jobs:
             TF_VAR_aws_password: ${{env.AWS_PASSWORD}}
             #TF_VAR_aws_ami_id: ${{env.AWS_AMI_ID}}
 
-  QA: 
-    runs-on: rhel_arm 
-    needs: DEV
-    environment: QA
-    steps: 
-      - name: Running code on QA 
-        run: echo "Code run successfully after test" 
-  UAT: 
-    runs-on: rhel_arm 
-    needs: QA
-    environment: UAT 
-    steps: 
-      - name: Running code on QA 
-        run: echo "Code run successfully after test" 
-  PROD: 
-    runs-on: rhel_arm 
-    needs: UAT
-    environment: PROD
-    steps: 
-      - name: Running code on QA 
-        run: echo "Code run successfully and deployed" 
+ 
      
            
           
