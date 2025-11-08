@@ -30,8 +30,8 @@
 
 - name: Copy Elastic repository configuration
   ansible.builtin.copy:
-    src: elastic.repo
-    dest: /etc/yum.repos.d/elastic.repo
+    src: elasticsearch.repo
+    dest: /etc/yum.repos.d/elasticsearch.repo
 
 - name: Copy Nginx config files
   ansible.builtin.copy:
