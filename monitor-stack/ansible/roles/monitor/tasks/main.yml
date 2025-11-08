@@ -142,10 +142,11 @@
 # - name: Install elastic
 # - name: Install logstash
 # - name: Install Kibana
-- name: Download grafana gpg key
-  ansible.builtin.shell: | 
-    wget -q -O gpg.key https://rpm.grafana.com/gpg.key
-    rpm --import gpg.key
+- name: Import Grafana GPG key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://rpm.grafana.com/gpg.key
+
 
              
 - name: Enable  firewalld
