@@ -57,7 +57,12 @@
     firewall-cmd --reload
   args:
     executable: /bin/bash
-- name: Install collection  GCP community.
+- name: Install hvac Python library
+  ansible.builtin.pip:
+        name: hvac
+        executable: pip3
+
+- name: Install collection  hashicorp vault.
   ansible.builtin.shell: ansible-galaxy collection install community.hashi_vault
   args:
     executable: /bin/bash
