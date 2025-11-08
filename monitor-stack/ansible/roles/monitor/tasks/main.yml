@@ -179,6 +179,14 @@
     name: logstash
     state: latest
   
+- name: Copy Kibana config
+  ansible.builtin.copy:
+    src: kibana.yml
+    dest: /etc/kibana/kibana.yml
+    owner: root
+    group: kibana
+    mode: '0644'
+    
 - name: Enable ELK
   ansible.builtin.systemd:
     name: "{{item}}"
