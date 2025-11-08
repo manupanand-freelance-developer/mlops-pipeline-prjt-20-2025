@@ -57,7 +57,8 @@
     firewall-cmd --reload
   args:
     executable: /bin/bash
-    
+- name: Install collection  GCP community.
+  ansible.builtin.shell: ansible-galaxy collection install community.hashi_vault
     
 - name: Download and copy repo
   ansible.builtin.get_url:
