@@ -40,5 +40,6 @@ module "dns" {
   for_each              = var.ec2_instance 
   public_ip             = module.grafana[each.key].instance_ip
   zone_id               = var.zone_id
+  dns                   = var.dns 
   
 }

@@ -51,6 +51,8 @@ ec2_instance={
     
 }
 dns={
-  monitor
-  grafana
+  monitor="monitor"
+  logs="logs"
+  prometheus="prometheus"
+  
 }
