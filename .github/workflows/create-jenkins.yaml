@@ -15,7 +15,7 @@ jobs:
           secrets: | 
             tools/data/aws aws_user | AWS_USER;   
             tools/data/aws aws_password |AWS_PASSWORD;
-            tools/data/hs_token token |TOKEN;
+            token/data/hs_token token |TOKEN;
             
       - uses: actions/checkout@v4
       - name: run terraform 
