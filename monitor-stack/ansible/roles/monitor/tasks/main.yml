@@ -139,16 +139,25 @@
 
 
 # - name: Install Grafana
-# - name: Install elastic
-# - name: Install logstash
-# - name: Install Kibana
+
 - name: Import Grafana GPG key
   ansible.builtin.rpm_key:
     state: present
     key: https://rpm.grafana.com/gpg.key
 
+- name: Copy Grafana repository configuration
+  ansible.builtin.copy:
+    src: grafana.repo
+    dest: /etc/yum.repos.d/grafana.repo
 
-             
+- name: Install Grafana
+  ansible.builtin.dnf:
+    name: grafana
+    state: latest
+          
+ # - name: Install elastic
+# - name: Install logstash
+# - name: Install Kibana   
 - name: Enable  firewalld
   ansible.builtin.systemd_service: 
    name:  firewalld
