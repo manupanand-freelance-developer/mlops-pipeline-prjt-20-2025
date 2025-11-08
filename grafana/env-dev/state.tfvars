@@ -1,4 +1,4 @@
- bucket = ""
+ bucket = "devops-state-manupanand-aps2"
  key    = "grafana/dev/terraform.tfstate"
- region = ""
+ region = "ap-south-2"
  # fill details
