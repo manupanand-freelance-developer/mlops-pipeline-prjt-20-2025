@@ -1,4 +1,4 @@
-name:  X86-K8s-Default VPC  -EKS provisioning pipeline 
+name:  EKS provisioning pipeline 
 on: 
   workflow_dispatch:
 jobs: 

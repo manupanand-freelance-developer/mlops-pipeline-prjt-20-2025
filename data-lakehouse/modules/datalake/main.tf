@@ -25,7 +25,7 @@ resource "aws_instance" "main" {
 
         AWS_USER     = var.aws_user
         AWS_PASSWORD = var.aws_password
-        role_name    ="monitor"
+        role_name    ="clickhouse"
   }))
 
 

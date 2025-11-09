@@ -1,0 +1,116 @@
+
+- name: Setting prompt name
+  ansible.builtin.lineinfile:
+     path: "/home/ec2-user/.bashrc"
+     line: 'export PS1="\[\e[1;31m\]\u\[\e[0m\]@\[\e[1;34m\]{{ role_name }}\[\e[0m\] \w \$ "'
+     create: true
+     mode: '0644'
+     
+- name: Installing firewalld
+  ansible.builtin.dnf:
+        name: firewalld
+        state: latest
+
+- name: Installing dnf-plugins-core
+  ansible.builtin.dnf:
+    name: dnf-plugins-core
+    state: present
+
+- name: Install Nginx
+  ansible.builtin.dnf:
+    name: nginx
+    state: latest
+
+- name: Copy nginx.conf
+  ansible.builtin.template:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Add yum utils
+  ansible.builtin.yum: 
+    name: yum-utils
+    state: latest
+
+- name: Add Click house repo
+  ansible.builtin.shell: yum-config-manager --add-repo https://packages.clickhouse.com/rpm/clickhouse.repo
+
+- name: Install Click house server and client
+  ansible.builtin.yum: 
+     name: "{{item}}"
+     state: latest 
+  loop: 
+    - clickhouse-server
+    - clickhouse-client   
+  
+- name: Copy Elastic repository configuration
+  ansible.builtin.copy:
+    src: elasticsearch.repo
+    dest: /etc/yum.repos.d/elasticsearch.repo
+
+- name: Copy Nginx config files
+  ansible.builtin.copy:
+    src: "{{ item }}.conf"
+    dest: /etc/nginx/conf.d/
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - clickhouse
+ 
+
+- name: Enable and restart nginx
+  ansible.builtin.systemd:
+    name: nginx
+    state: restarted
+    enabled: true
+
+- name: Enable and restart firewalld
+  ansible.builtin.systemd:
+    name: firewalld
+    state: restarted
+    enabled: true
+
+- name: Open firewall ports
+  ansible.builtin.shell: |
+    firewall-cmd --zone=public --add-port=22/tcp --permanent
+    firewall-cmd --zone=public --add-port=9000/tcp --permanent
+    firewall-cmd --zone=public --add-port=80/http --permanent
+    firewall-cmd --zone=public --add-port=443/https --permanent
+    firewall-cmd --zone=public --add-port=8123/tcp --permanent
+    firewall-cmd --zone=public --add-port=8443/tcp --permanent
+    firewall-cmd --zone=public --add-port=9010/tcp --permanent
+    firewall-cmd --zone=public --add-port=9363/tcp --permanent
+    firewall-cmd --zone=public --add-port=9281/tcp --permanent
+    firewall-cmd --zone=public --add-port=2181/tcp --permanent
+    firewall-cmd --zone=public --add-port=9004/tcp --permanent
+    firewall-cmd --zone=public --add-port=9005/tcp --permanent
+    firewall-cmd --zone=public --add-port=9009/tcp --permanent
+    firewall-cmd --zone=public --add-port=42000/tcp --permanent
+    firewall-cmd --zone=public --add-port=9440/tcp --permanent
+    firewall-cmd --zone=public --add-port=9011/tcp --permanent
+    firewall-cmd --zone=public --add-port=9234/tcp --permanent
+    firewall-cmd --zone=public --add-port=9181/tcp --permanent
+    firewall-cmd --zone=public --add-port=9100/tcp --permanent
+    firewall-cmd --zone=public --add-port=9019/tcp --permanent
+
+    firewall-cmd --reload
+  args:
+    executable: /bin/bash
+     
+- name: Enable and restart Click house server
+  ansible.builtin.systemd:
+    name: clickhouse-server
+    state: restarted
+    enabled: true
+ 
+   
+- name: Enable  firewalld
+  ansible.builtin.systemd_service: 
+   name:  firewalld
+   state: restarted
+   enabled: true 
+   
+   
