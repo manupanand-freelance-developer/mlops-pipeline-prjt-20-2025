@@ -1,0 +1,147 @@
+
+- name: Setting prompt name
+  ansible.builtin.lineinfile:
+     path: "/home/ec2-user/.bashrc"
+     line: 'export PS1="\[\e[1;31m\]\u\[\e[0m\]@\[\e[1;34m\]{{ role_name }}\[\e[0m\] \w \$ "'
+     create: true
+     mode: '0644'
+- name: Installing firewalld
+  ansible.builtin.dnf:
+        name: firewalld
+        state: latest
+
+- name: Installing dnf-plugins-core
+  ansible.builtin.dnf:
+    name: dnf-plugins-core
+    state: present
+
+- name: Install Nginx
+  ansible.builtin.dnf:
+    name: nginx
+    state: latest
+
+- name: Copy nginx.conf
+  ansible.builtin.template:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+
+
+- name: Copy Nginx config files
+  ansible.builtin.copy:
+    src: "{{ item }}.conf"
+    dest: /etc/nginx/conf.d/
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - mlflow
+
+- name: Enable and restart nginx
+  ansible.builtin.systemd:
+    name: nginx
+    state: restarted
+    enabled: true
+
+- name: Enable and restart firewalld
+  ansible.builtin.systemd:
+    name: firewalld
+    state: restarted
+    enabled: true
+
+- name: Open firewall ports
+  ansible.builtin.shell: |
+    firewall-cmd --zone=public --add-port=22/tcp --permanent
+    firewall-cmd --zone=public --add-port=5000/tcp --permanent
+    firewall-cmd --zone=public --add-port=80/tcp --permanent
+    firewall-cmd --zone=public --add-port=443/tcp --permanent
+    
+    firewall-cmd --reload
+  args:
+    executable: /bin/bash
+
+- name: Add DVC repository
+  ansible.builtin.get_url:
+    url: https://dvc.org/rpm/dvc.repo
+    dest: /etc/yum.repos.d/dvc.repo
+    mode: '0644'
+
+- name: Import DVC GPG key
+  ansible.builtin.rpm_key:
+    key: https://dvc.org/rpm/iterative.asc
+    state: present
+
+- name: Update system packages
+  ansible.builtin.yum:
+    name: '*'
+    state: latest
+
+- name: Install DVC
+  ansible.builtin.yum:
+    name: dvc
+    state: present
+
+- name: Ensure Python3 and pip are installed
+  ansible.builtin.yum:
+    name:
+      - python3
+      - python3-pip
+    state: present
+
+- name: Install MLflow using pip
+  ansible.builtin.pip:
+    name: mlflow
+    executable: pip3
+
+- name: Create MLflow working directory
+  ansible.builtin.file:
+    path: /opt/mlflow
+    state: directory
+    owner: ec2-user
+    group: ec2-user
+    mode: '0755'
+
+- name: Create MLflow systemd service file
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/mlflow.service
+    content: |
+      [Unit]
+      Description=MLflow Tracking Server
+      After=network.target
+
+      [Service]
+      User=ec2-user
+      Group=ec2-user
+      WorkingDirectory=/opt/mlflow
+      ExecStart=/usr/local/bin/mlflow server \
+        --backend-store-uri sqlite:///mlflow.db \
+        --default-artifact-root /opt/mlflow/mlruns \
+        --host 0.0.0.0 \
+        --port 5000
+      Restart=always
+      RestartSec=5
+
+      [Install]
+      WantedBy=multi-user.target
+    mode: '0644'
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Enable and start MLflow service
+  ansible.builtin.systemd:
+    name: mlflow
+    enabled: true
+    state: started
+    
+- name: Enable  firewalld
+  ansible.builtin.systemd_service: 
+   name:  firewalld
+   state: restarted
+   enabled: true 
+   
+   
