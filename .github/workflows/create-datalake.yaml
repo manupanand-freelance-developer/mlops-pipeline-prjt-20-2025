@@ -15,7 +15,7 @@ jobs:
           secrets: | 
             tools/data/aws aws_user | AWS_USER;   
             tools/data/aws aws_password |AWS_PASSWORD;
-            token/data/hs_token token |TOKEN;
+           # token/data/hs_token token |TOKEN;
             
       - uses: actions/checkout@v4
       - name: run terraform 
@@ -27,7 +27,7 @@ jobs:
         env:
             TF_VAR_aws_user: ${{env.AWS_USER}}
             TF_VAR_aws_password: ${{env.AWS_PASSWORD}}
-            TF_VAR_vault_token: ${{env.TOKEN}}
+           # TF_VAR_vault_token: ${{env.TOKEN}}
 
 
      
