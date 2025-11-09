@@ -1,4 +1,4 @@
-name: Destroy jenkins pipeline
+name: Destroy datalake pipeline
 on: 
   workflow_dispatch:
 jobs:
