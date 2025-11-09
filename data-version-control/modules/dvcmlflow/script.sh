@@ -61,7 +61,7 @@ echo "${AWS_USER}:${AWS_PASSWORD}" | sudo chpasswd
 echo "[INFO] Running ansible-pull..."
 ansible-pull -i localhost, \
   -U https://github.com/manupanand-freelance-developer/mlops-pipeline-prjt-20-2025.git \
-  monitor-stack/ansible/playbook.yml \
+  data-version-control/ansible/playbook.yml \
   -e ansible_user="${AWS_USER}" \
   -e ansible_password="${AWS_PASSWORD}" \
   -e role_name="${role_name}"
