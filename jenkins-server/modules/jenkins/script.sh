@@ -59,6 +59,9 @@ sleep 5
 echo "[INFO] Setting password for user $AWS_USER"
 echo "${AWS_USER}:${AWS_PASSWORD}" | sudo chpasswd
 
+
+sudo dnf install -y python3 python3-pip ansible
+sudo ansible-galaxy collection install community.hashi_vault
 # Run Ansible pull
 echo "[INFO] Running ansible-pull..."
 ansible-pull -i localhost, \
