@@ -84,59 +84,59 @@
     name: dvc
     state: present
 
-# - name: Ensure Python3 and pip are installed
-#   ansible.builtin.yum:
-#     name:
-#       - python3
-#       - python3-pip
-#     state: present
+- name: Ensure Python3 and pip are installed
+  ansible.builtin.yum:
+    name:
+      - python3
+      - python3-pip
+    state: present
 
-# - name: Install MLflow using pip
-#   ansible.builtin.pip:
-#     name: mlflow
-#     executable: pip3
+- name: Install MLflow using pip
+  ansible.builtin.pip:
+    name: mlflow
+    executable: pip3
 
-# - name: Create MLflow working directory
-#   ansible.builtin.file:
-#     path: /opt/mlflow
-#     state: directory
-#     owner: ec2-user
-#     group: ec2-user
-#     mode: '0755'
+- name: Create MLflow working directory
+  ansible.builtin.file:
+    path: /opt/mlflow
+    state: directory
+    owner: ec2-user
+    group: ec2-user
+    mode: '0755'
 
-# - name: Create MLflow systemd service file
-#   ansible.builtin.copy:
-#     dest: /etc/systemd/system/mlflow.service
-#     content: |
-#       [Unit]
-#       Description=MLflow Tracking Server
-#       After=network.target
+- name: Create MLflow systemd service file
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/mlflow.service
+    content: |
+      [Unit]
+      Description=MLflow Tracking Server
+      After=network.target
 
-#       [Service]
-#       User=ec2-user
-#       Group=ec2-user
-#       WorkingDirectory=/opt/mlflow
-#       ExecStart=/usr/local/bin/mlflow server \
-#         --backend-store-uri sqlite:///mlflow.db \
-#         --default-artifact-root /opt/mlflow/mlruns \
-#         --host 0.0.0.0 \
-#         --port 5000
-#       Restart=always
-#       RestartSec=5
+      [Service]
+      User=ec2-user
+      Group=ec2-user
+      WorkingDirectory=/opt/mlflow
+      ExecStart=/usr/local/bin/mlflow server \
+        --backend-store-uri sqlite:///mlflow.db \
+        --default-artifact-root /opt/mlflow/mlruns \
+        --host 0.0.0.0 \
+        --port 5000
+      Restart=always
+      RestartSec=5
 
-#       [Install]
-#       WantedBy=multi-user.target
-#     mode: '0644'
+      [Install]
+      WantedBy=multi-user.target
+    mode: '0644'
 
-# - name: Reload systemd daemon
-#   ansible.builtin.systemd:
-#     daemon_reload: true
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
 
-# - name: Enable and start MLflow service
-#   ansible.builtin.systemd:
-#     name: mlflow
-#     enabled: true
-#     state: started
+- name: Enable and start MLflow service
+  ansible.builtin.systemd:
+    name: mlflow
+    enabled: true
+    state: started
     
 - name: Enable  firewalld
   ansible.builtin.systemd_service: 
