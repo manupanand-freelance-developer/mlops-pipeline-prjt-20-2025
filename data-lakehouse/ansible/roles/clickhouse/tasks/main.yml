@@ -45,10 +45,7 @@
     - clickhouse-server
     - clickhouse-client   
   
-- name: Copy Elastic repository configuration
-  ansible.builtin.copy:
-    src: elasticsearch.repo
-    dest: /etc/yum.repos.d/elasticsearch.repo
+
 
 - name: Copy Nginx config files
   ansible.builtin.copy:
