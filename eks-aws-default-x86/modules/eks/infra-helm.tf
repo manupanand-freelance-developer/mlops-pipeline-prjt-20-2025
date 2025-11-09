@@ -50,44 +50,44 @@ resource "null_resource" "external-cluster-secret-store" {
   
 }
 # airflow helm release
-resource "helm_release" "airflow" {
-  depends_on = [null_resource.kube-config]
+# resource "helm_release" "airflow" {
+#   depends_on = [null_resource.kube-config]
 
-  name       = "airflow"
-  repository = "https://airflow.apache.org"
-  chart      = "airflow"
-  namespace  = "airflow"
+#   name       = "airflow"
+#   repository = "https://airflow.apache.org"
+#   chart      = "airflow"
+#   namespace  = "airflow"
 
-  create_namespace = true
-  wait             = true
+#   create_namespace = true
+#   wait             = true
 
-  set {
-    name  = "webserver.defaultUser.enabled"
-    value = "true"
-  }
+#   set {
+#     name  = "webserver.defaultUser.enabled"
+#     value = "true"
+#   }
 
-  set {
-    name  = "webserver.defaultUser.username"
-    value = "admin"
-  }
+#   set {
+#     name  = "webserver.defaultUser.username"
+#     value = "admin"
+#   }
 
-  set {
-    name  = "webserver.defaultUser.password"
-    value = "admin"
-  }
+#   set {
+#     name  = "webserver.defaultUser.password"
+#     value = "admin"
+#   }
 
-  set {
-    name  = "executor"
-    value = "CeleryExecutor"
-  }
+#   set {
+#     name  = "executor"
+#     value = "CeleryExecutor"
+#   }
 
-  set {
-    name  = "redis.enabled"
-    value = "true"
-  }
+#   set {
+#     name  = "redis.enabled"
+#     value = "true"
+#   }
 
-  set {
-    name  = "postgresql.enabled"
-    value = "true"
-  }
-}
+#   set {
+#     name  = "postgresql.enabled"
+#     value = "true"
+#   }
+# }

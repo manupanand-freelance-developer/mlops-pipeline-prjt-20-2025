@@ -1,0 +1,1 @@
+aws eks update-kubeconfig --name dev-eks-cluster --region ap-south-2
