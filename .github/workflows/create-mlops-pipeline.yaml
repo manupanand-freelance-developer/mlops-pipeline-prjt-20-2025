@@ -31,7 +31,8 @@ jobs:
             TF_VAR_aws_password: ${{env.AWS_PASSWORD}}
             #TF_VAR_aws_ami_id: ${{env.AWS_AMI_ID}}
   DATA-LAKE: 
-    runs-on: rhel_arm   
+    runs-on: rhel_arm  
+    needs: MONITOR 
     steps:
       - name: Import secrets hashicorp 
         uses: hashicorp/vault-action@v2.4.0
@@ -57,6 +58,7 @@ jobs:
            # TF_VAR_vault_token: ${{env.TOKEN}}
   DVC-MLFLOW: 
     runs-on: rhel_arm   
+    needs: DATA-LAKE
     steps:
       - name: Import secrets hashicorp 
         uses: hashicorp/vault-action@v2.4.0
@@ -83,6 +85,7 @@ jobs:
  
   JENKINS: 
     runs-on: rhel_arm   
+    needs: DVC-MLFLOW
     steps:
       - name: Import secrets hashicorp 
         uses: hashicorp/vault-action@v2.4.0

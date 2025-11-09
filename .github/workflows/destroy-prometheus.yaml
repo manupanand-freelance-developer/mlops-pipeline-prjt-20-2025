@@ -4,7 +4,6 @@ on:
 jobs:
   DEV: 
     runs-on: rhel_arm 
-    environment:
     steps:
       - name: Import secrets hashicorp 
         uses: hashicorp/vault-action@v2.4.0
