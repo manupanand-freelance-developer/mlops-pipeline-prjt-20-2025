@@ -8,7 +8,7 @@ ami_id          ="ami-0e86c549c4c958e98"
 
 
 ec2_instance={
-   monitor={
+   dataversioncontrol={
         instance_type ="t3.large" #"r6i.large"
         volume_size   =40
         policy_name=["AmazonEC2FullAccess","AmazonSSMFullAccess","AmazonS3ReadOnlyAccess"]

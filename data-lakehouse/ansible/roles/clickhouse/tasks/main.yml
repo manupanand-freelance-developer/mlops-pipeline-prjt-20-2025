@@ -107,7 +107,17 @@
     state: restarted
     enabled: true
  
-   
+    
+- name: Modify SElinux enable Nginx to connect the network 
+  ansible.builtin.shell: setsebool -P httpd_can_network_connect 1
+
+- name: Enable and restart nginx
+  ansible.builtin.systemd: 
+    name: nginx
+    state: restarted
+    enabled: true
+
+
 - name: Enable  firewalld
   ansible.builtin.systemd_service: 
    name:  firewalld

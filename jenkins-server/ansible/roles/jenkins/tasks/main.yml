@@ -181,7 +181,18 @@
 #     file: mbranch-jobs.yml
 #   loop: 
 #      - { jobname: 'test-1' }
-     
+
+    
+- name: Modify SElinux enable Nginx to connect the network 
+  ansible.builtin.shell: setsebool -P httpd_can_network_connect 1
+
+- name: Enable and restart nginx
+  ansible.builtin.systemd: 
+    name: nginx
+    state: restarted
+    enabled: true
+
+
 - name: Enable and restart firewalld
   ansible.builtin.systemd:
     name: firewalld
