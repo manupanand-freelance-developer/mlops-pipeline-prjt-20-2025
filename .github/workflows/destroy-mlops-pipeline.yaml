@@ -1,0 +1,101 @@
+name: Destroy MLOPS pipeline
+on: 
+  workflow_dispatch:
+jobs:
+
+  MONITOR: 
+    runs-on: rhel_arm 
+    # environment:
+    steps:
+      - name: Import secrets hashicorp 
+        uses: hashicorp/vault-action@v2.4.0
+        with: 
+          url: ${{secrets.VAULT_SERVER}}
+          token: ${{secrets.VAULT_TOKEN}}
+          tlsSkipVerify: true  
+          secrets: | 
+            tools/data/aws aws_user | AWS_USER;   
+            tools/data/aws aws_password |AWS_PASSWORD;
+      - name: Destroying the Infrastructure
+        run: |
+         
+          cd monitor-stack; terraform destroy -var-file=env-dev/main.tfvars -auto-approve
+        env: 
+          TF_VAR_aws_user: ${{env.AWS_USER}}
+          TF_VAR_aws_password: ${{env.AWS_PASSWORD}}
+  DATA-LAKE: 
+    runs-on: rhel_arm 
+    # environment:
+    steps:
+      - name: Import secrets hashicorp 
+        uses: hashicorp/vault-action@v2.4.0
+        with: 
+          url: ${{secrets.VAULT_SERVER}}
+          token: ${{secrets.VAULT_TOKEN}}
+          tlsSkipVerify: true  #add to runner later /usr/local/share/ca-certificates/vault-ca.crt
+          secrets: | 
+            tools/data/aws aws_user | AWS_USER;   
+            tools/data/aws aws_password |AWS_PASSWORD;
+           # token/data/hs_token token |TOKEN;
+           # tools/data/aws aws_ami_id | AWS_AMI_ID  ;
+      - name: Destroying the Infrastructure
+        run: |
+         
+          cd data-lakehouse; terraform destroy -var-file=env-dev/main.tfvars -auto-approve
+        env: 
+          TF_VAR_aws_user: ${{env.AWS_USER}}
+          TF_VAR_aws_password: ${{env.AWS_PASSWORD}}
+         # TF_VAR_vault_token: ${{env.TOKEN}}
+         # TF_VAR_aws_ami_id: ${{env.AWS_AMI_ID}}
+  DVC-MLFLOW: 
+    runs-on: rhel_arm 
+    # environment:
+    steps:
+      - name: Import secrets hashicorp 
+        uses: hashicorp/vault-action@v2.4.0
+        with: 
+          url: ${{secrets.VAULT_SERVER}}
+          token: ${{secrets.VAULT_TOKEN}}
+          tlsSkipVerify: true  #add to runner later /usr/local/share/ca-certificates/vault-ca.crt
+          secrets: | 
+            tools/data/aws aws_user | AWS_USER;   
+            tools/data/aws aws_password |AWS_PASSWORD;
+           # token/data/hs_token token |TOKEN;
+           # tools/data/aws aws_ami_id | AWS_AMI_ID  ;
+      - name: Destroying the Infrastructure
+        run: |
+         
+          cd data-version-control; terraform destroy -var-file=env-dev/main.tfvars -auto-approve
+        env: 
+          TF_VAR_aws_user: ${{env.AWS_USER}}
+          TF_VAR_aws_password: ${{env.AWS_PASSWORD}}
+         # TF_VAR_vault_token: ${{env.TOKEN}}
+         # TF_VAR_aws_ami_id: ${{env.AWS_AMI_ID}}
+
+  JENKINS: 
+    runs-on: rhel_arm 
+    # environment:
+    steps:
+      - name: Import secrets hashicorp 
+        uses: hashicorp/vault-action@v2.4.0
+        with: 
+          url: ${{secrets.VAULT_SERVER}}
+          token: ${{secrets.VAULT_TOKEN}}
+          tlsSkipVerify: true  #add to runner later /usr/local/share/ca-certificates/vault-ca.crt
+          secrets: | 
+            tools/data/aws aws_user | AWS_USER;   
+            tools/data/aws aws_password |AWS_PASSWORD;
+            token/data/hs_token token |TOKEN;
+           # tools/data/aws aws_ami_id | AWS_AMI_ID  ;
+      - name: Destroying the Infrastructure
+        run: |
+         
+          cd jenkins-server; terraform destroy -var-file=env-dev/main.tfvars -auto-approve
+        env: 
+          TF_VAR_aws_user: ${{env.AWS_USER}}
+          TF_VAR_aws_password: ${{env.AWS_PASSWORD}}
+          TF_VAR_vault_token: ${{env.TOKEN}}
+         # TF_VAR_aws_ami_id: ${{env.AWS_AMI_ID}}
+          
+
+        
