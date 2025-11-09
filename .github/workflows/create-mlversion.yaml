@@ -1,4 +1,4 @@
-name: Datalake provisioning pipeline 
+name: Data version control provisioning pipeline 
 on: 
   workflow_dispatch:
 
