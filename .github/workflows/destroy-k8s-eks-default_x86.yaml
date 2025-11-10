@@ -1,4 +1,4 @@
-name: EKS destroy pipeline 
+name: Destroy EKS  pipeline 
 on: 
   workflow_dispatch:
 jobs:

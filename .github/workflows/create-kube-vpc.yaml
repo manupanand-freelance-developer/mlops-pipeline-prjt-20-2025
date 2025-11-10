@@ -1,4 +1,4 @@
-name: Create Kubernetes VPC Infrastructure
+name:  Kubernetes VPC Infrastructure
 on: 
   workflow_dispatch: 
 jobs: 

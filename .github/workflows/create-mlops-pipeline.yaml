@@ -1,4 +1,4 @@
-name: Create MLOPS pipeline 
+name:  MLOPS pipeline 
 on: 
   workflow_dispatch:
 
