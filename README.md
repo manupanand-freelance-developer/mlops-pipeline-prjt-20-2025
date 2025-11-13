@@ -117,8 +117,8 @@ To tear down the entire infrastructure and avoid ongoing costs:
     terraform destroy -var-file=../environments/dev/terraform.tfvars
 
 ## Architecture
-![MLOps infra](![MLOps Infrastructure](https://raw.githubusercontent.com/manupanand-freelance-developer/mlops-pipeline-prjt-20-2025/main/images/mlops.gif)
-) 
+![MLOps Infrastructure](https://raw.githubusercontent.com/manupanand-freelance-developer/mlops-pipeline-prjt-20-2025/main/images/mlops.gif)
+
 
 ## Licence
 MIT Licence
