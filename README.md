@@ -15,7 +15,8 @@ Vault	Security	Centralized secrets management for MLflow database credentials, S
 
 The code is organized to separate cloud provisioning (Terraform) from configuration management (Ansible) and environment-specific variables.
 
-.
+```
+
 ├── environments/
 │   ├── dev/
 │   │   ├── terraform.tfvars  # Dev-specific variables (smaller instance sizes)
@@ -39,6 +40,7 @@ The code is organized to separate cloud provisioning (Terraform) from configurat
     │   └── k8s_deploy/       # Deploys MLflow, Prometheus/Grafana, Seldon Core via Helm
     └── playbooks/
         └── deploy_k8s_tools.yml
+```
 
 ⚙️ Prerequisites
 
@@ -114,3 +116,5 @@ To tear down the entire infrastructure and avoid ongoing costs:
     cd terraform
     terraform destroy -var-file=../environments/dev/terraform.tfvars
 
+## Architecture
+![MLOps infra](https://github.com/manupanand-freelance-developer/mlops-pipeline-prjt-20-2025/images/mlops.gif) 

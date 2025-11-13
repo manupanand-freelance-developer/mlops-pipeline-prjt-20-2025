@@ -10,7 +10,6 @@ This repository contains infrastructure as code (IaC) configurations using **Ter
 
 ```
 
-
 |── ansible/
 │   ├── roles/grafana/tasks/main.yml      
 │   └── playbook.yml 
