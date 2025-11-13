@@ -116,7 +116,7 @@ To tear down the entire infrastructure and avoid ongoing costs:
     cd terraform
     terraform destroy -var-file=../environments/dev/terraform.tfvars
 
-## Architecture
+## Infrastructure Architecture
 ![MLOps Infrastructure](https://raw.githubusercontent.com/manupanand-freelance-developer/mlops-pipeline-prjt-20-2025/main/images/mlops.gif)
 
 
